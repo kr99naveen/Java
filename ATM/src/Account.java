@@ -15,7 +15,7 @@ public class Account {
         this.customerNumber = customerNumber;
     }
 
-    public int getCustomerNumber(){
+    public int getCustomerNumber(){ 
         return customerNumber;
     }
 
