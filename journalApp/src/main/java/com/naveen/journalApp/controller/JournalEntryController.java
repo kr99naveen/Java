@@ -10,7 +10,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/journal")
-public class JournalEntryController {
+public class    JournalEntryController {
 
     private Map<Long, JournalEntry> journalEntries = new HashMap<>();
 
@@ -24,6 +24,7 @@ public class JournalEntryController {
     public boolean createEntry(@RequestBody JournalEntry myEntry){
         System.out.println("creating journal");
         journalEntries.put(myEntry.getId(), myEntry);
+        System.out.println("Journal created!!!!");
         return true;
     }
 
