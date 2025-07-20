@@ -2,6 +2,7 @@ package com.naveen.journalApp.entity;
 
 import lombok.Data;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -21,6 +22,7 @@ public class JournalEntry {
     //unique key in entries, not manadatory, if not provided, db will create it
     @Id
     private ObjectId id;
+    @NonNull
     private  String title;
     private String content;
     private LocalDateTime date;
