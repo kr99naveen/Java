@@ -2,11 +2,10 @@ package com.naveen.journalApp.controller;
 
 import com.naveen.journalApp.entity.User;
 import com.naveen.journalApp.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/public")
@@ -18,11 +17,18 @@ public class PublicController {
     @PostMapping("/create-user")
     public void createUser(@RequestBody User user){
         System.out.println("creating user ::::: "+user);
-        userService.saveEntry(user);
+        userService.saveNewEntry(user);
     }
 
-    @RequestMapping("health")
+    @GetMapping("health")
     public String healthCheck(){
-        return "OK";    
+        return "OK";
+    }
+
+
+    @GetMapping("csrf")
+    public CsrfToken getCsrf(HttpServletRequest request){
+        CsrfToken token = (CsrfToken) request.getAttribute("_csrf");
+        return token;
     }
 }

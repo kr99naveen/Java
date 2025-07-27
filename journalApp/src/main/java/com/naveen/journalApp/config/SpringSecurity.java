@@ -10,12 +10,15 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-
+//its telling spring that this related configurations stuff, look here as well for configurations things
 @Configuration
+//this tells spring to just don't apply the default configurations of spring security
+//use these connfigurations that i am providing
 @EnableWebSecurity
 public class SpringSecurity {
 
@@ -32,6 +35,8 @@ public class SpringSecurity {
                         .requestMatchers("/journal/**","/user/**").authenticated()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().permitAll())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .build();
@@ -47,6 +52,7 @@ public class SpringSecurity {
 //    }
 
 
+    //here the authentication of users' details are done
     //from spring 6 onwards
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {

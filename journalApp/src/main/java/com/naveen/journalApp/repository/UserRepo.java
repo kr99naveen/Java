@@ -13,4 +13,5 @@ import javax.swing.*;
 // that's all
 public interface UserRepo extends MongoRepository<User, ObjectId> {
     User findByUserName(String username);
+    void deleteByUserName(String username);
 }

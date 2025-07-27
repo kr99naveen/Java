@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -27,11 +28,15 @@ public class JournalEntryService {
     @Transactional
     public void saveEntry(JournalEntry journalEntry,  String userName){
         try {
-            System.out.println("creating enry in journal");
             User user = userService.findByUserName(userName);
             JournalEntry saved = journalEntryRepo.save(journalEntry);
+            ObjectId prevId = saved.getId();
+            List<JournalEntry> checkEntry = user.getJournalEntries().stream().filter(x -> x.getId().equals(prevId)).collect(Collectors.toList());
+            if(!checkEntry.isEmpty()){
+                user.getJournalEntries().removeIf(element -> element.getId().equals(checkEntry.get(0).getId()));
+            }
             user.getJournalEntries().add(saved);
-            userService.saveEntry(user);
+            userService.saveUser(user);
         } catch (Exception e) {
             System.out.println("errror"+e);
             throw new RuntimeException("Exception while creating journal entry ::: ",e);
@@ -46,12 +51,23 @@ public class JournalEntryService {
         return journalEntryRepo.findById(id);
     }
 
-    public void deleteById(ObjectId id, String userName){
-        User user = userService.findByUserName(userName);
-        user.getJournalEntries().removeIf(x -> x.getId().equals(id));
-        userService.saveEntry(user);
-        journalEntryRepo.deleteById(id);
+    @Transactional
+    public boolean deleteById(ObjectId id, String userName){
+        try {
+            User user = userService.findByUserName(userName);
+            boolean removed = user.getJournalEntries().removeIf(x -> x.getId().equals(id));
+            if(removed){
+                userService.saveUser(user);
+                journalEntryRepo.deleteById(id);
+            }
+            return removed;
+        } catch (Exception e) {
+            System.out.println(e);
+            throw new RuntimeException("An error while deleting the journal");
+        }
     }
+
+//    public List<JournalEntry> findByUsername()
 }
 
 

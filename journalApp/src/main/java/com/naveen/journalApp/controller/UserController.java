@@ -2,6 +2,7 @@ package com.naveen.journalApp.controller;
 
 import com.naveen.journalApp.entity.JournalEntry;
 import com.naveen.journalApp.entity.User;
+import com.naveen.journalApp.repository.UserRepo;
 import com.naveen.journalApp.service.JournalEntryService;
 import com.naveen.journalApp.service.UserService;
 import org.bson.types.ObjectId;
@@ -22,6 +23,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRepo userRepo;
 
     @GetMapping("/all")
     public List<User> getAllUsers(){
@@ -45,14 +49,22 @@ public class UserController {
     public ResponseEntity<?> updateUser(@RequestBody User user){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-
+        System.out.println("updating user details :::::::::::::::::::::::::::");
         User userInDb = userService.findByUserName(username);
         if(userInDb!=null){
             userInDb.setUserName(user.getUserName());
             userInDb.setPassword((user.getPassword()));
-            userService.saveEntry((userInDb));
+            userService.saveNewEntry((userInDb));
         }
 
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<?> deleteByUserId(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        userRepo.deleteByUserName(username);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
