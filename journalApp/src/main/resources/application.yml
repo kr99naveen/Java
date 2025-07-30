@@ -1,12 +1,19 @@
+# this will tell spring which yml file to pick for
+# configuration
+
 spring:
-  data:
-    mongodb:
-      uri: mongodb+srv://naveen-spring-user-mongo:naveen-mongo%406530@java-springboot.gytwyb7.mongodb.net/?retryWrites=true&w=majority&appName=Java-Springboot
-      database: journal
-      auto-index-creation: true
+  profiles:
+    active : dev
+#  for multiples profile together, and configurations will be merged
+#  this will require the handling of conflicts of keys and securityConfig files that
+#  are based on profiles like @Profile("dev") or @Profile("prod")
+#    active: dev, prod
 
-server:
-  port: 8081
-  servlet:
-    context-path: /journal
 
+#  common part here
+#  configurations according to server environment
+#  in that particular yml of the server and
+  server:
+    port: 8081
+    servlet:
+      context-path: /journal

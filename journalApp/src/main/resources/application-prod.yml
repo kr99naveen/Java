@@ -1,0 +1,19 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://naveen-spring-user-mongo:naveen-mongo%406530@java-springboot.gytwyb7.mongodb.net/?retryWrites=true&w=majority&appName=Java-Springboot
+      database: journaldb
+      auto-index-creation: true
+  main:
+    allow-circular-references: true
+  application:
+    name: journalApp
+  security:
+    user:
+      name: naveen
+      password: Admin@123
+
+server:
+  port: 8082
+  servlet:
+    context-path: /journal

@@ -22,8 +22,8 @@ import org.springframework.security.web.SecurityFilterChain;
 //use these connfigurations that i am providing
 @EnableWebSecurity
 //this tells the environment
-@Profile("dev")
-public class SpringSecurity {
+@Profile("prod")
+public class SpringSecurityProd {
 
 
     @Autowired
@@ -34,10 +34,7 @@ public class SpringSecurity {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         return http.authorizeHttpRequests(request -> request
-                        .requestMatchers("/public/**").permitAll()
-                        .requestMatchers("/journal/**","/user/**").authenticated()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .anyRequest().permitAll())
+                        .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults())

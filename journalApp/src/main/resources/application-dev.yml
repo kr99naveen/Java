@@ -1,0 +1,38 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://naveen-spring-user-mongo:naveen-mongo%406530@java-springboot.gytwyb7.mongodb.net/?retryWrites=true&w=majority&appName=Java-Springboot
+      database: journaldb
+      auto-index-creation: true
+  main:
+    allow-circular-references: true
+  application:
+    name: journalApp
+  security:
+    user:
+      name: naveen
+      password: Admin@123
+
+server:
+  port: 8081
+  servlet:
+    context-path: /journal
+
+logging:
+  level:
+#    com:
+#      naveen:
+#        journalApp: DEBUG
+#    root: ERROR   #only error and in root, so applied to whole project
+    root: OFF      #for offing the the logs, similarily for package and classes
+
+# closing for a particular service class
+#logging:
+#  level:
+#    com:
+#      naveen:
+#        journalApp:
+#          service:
+#            UserService: OFF
+
+

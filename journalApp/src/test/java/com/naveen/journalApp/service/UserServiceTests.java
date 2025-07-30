@@ -12,8 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-//this annotation to tell spring to context outside main appliaction
-//other scanning will not be done and so not beans will be provided even if
+//this annotation to tell spring to create context outside main appliaction
+//otherwise scanning will not be done and so no beans will be provided even if
 //class declared as @Component
 @SpringBootTest
 public class UserServiceTests {

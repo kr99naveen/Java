@@ -4,6 +4,8 @@ import com.naveen.journalApp.entity.JournalEntry;
 import com.naveen.journalApp.entity.User;
 import com.naveen.journalApp.repository.JournalEntryRepo;
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +27,13 @@ public class JournalEntryService {
     @Autowired
     private UserService userService;
 
+    //logger, every class has there own logger, so private,
+    //for refrain for accidental reassignment, keep it final
+    //and just one instance required for JournalEntryService instance, so static
+    //every logger is associated with some class, so we gave the class
+    //Slf4j is logging abstraction framework of logback || Simple logging facade for java facade=>abstraction
+    private static final Logger logger = LoggerFactory.getLogger(JournalEntryService.class);
+
     @Transactional
     public void saveEntry(JournalEntry journalEntry,  String userName){
         try {
@@ -38,8 +47,7 @@ public class JournalEntryService {
             user.getJournalEntries().add(saved);
             userService.saveUser(user);
         } catch (Exception e) {
-            System.out.println("errror"+e);
-            throw new RuntimeException("Exception while creating journal entry ::: ",e);
+//            throw new RuntimeException("Exception while creating journal entry ::: ",e);
         }
     }
 
