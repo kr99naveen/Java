@@ -1,5 +1,6 @@
 package com.naveen.journalApp.entity;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 import org.bson.types.ObjectId;
@@ -18,7 +19,9 @@ import java.util.List;
 
 
 @Document(collection = "users")
-@Data
+@Data  //Lombok data annotations, annotation that bundles several other Lombok annotations, including @Getter, @Setter, @ToString, @EqualsAndHashCode, and @RequiredArgsConstructor
+
+@Builder
 public class User {
     //unique key in entries, not manadatory, if not provided, db will create it
     @Id
@@ -29,6 +32,10 @@ public class User {
     @Indexed(unique = true)
     @NonNull
     private  String userName;
+
+    private String email;
+
+    private  boolean sentimentAnalysis;
 
     @NonNull
     private String password;

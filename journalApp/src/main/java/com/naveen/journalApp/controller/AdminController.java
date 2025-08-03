@@ -1,5 +1,6 @@
 package com.naveen.journalApp.controller;
 
+import com.naveen.journalApp.cache.AppCache;
 import com.naveen.journalApp.entity.User;
 import com.naveen.journalApp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,9 @@ public class AdminController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AppCache appCache;
+
     @GetMapping("/all-users")
     public ResponseEntity<?> getAllUsers(){
         List<User> all = userService.getAll();
@@ -27,5 +31,11 @@ public class AdminController {
     @PostMapping("/create-admin")
     public void createUser(@RequestBody User user){
         userService.saveAdmin(user);
+    }
+
+    //to reset the key cache in without rerunning the application
+    @GetMapping("/clear-app-cache")
+    public void createUser(){
+        appCache.init();
     }
 }

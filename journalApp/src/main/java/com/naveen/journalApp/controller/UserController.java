@@ -1,10 +1,12 @@
 package com.naveen.journalApp.controller;
 
+import com.naveen.journalApp.api.response.WeatherResponse;
 import com.naveen.journalApp.entity.JournalEntry;
 import com.naveen.journalApp.entity.User;
 import com.naveen.journalApp.repository.UserRepo;
 import com.naveen.journalApp.service.JournalEntryService;
 import com.naveen.journalApp.service.UserService;
+import com.naveen.journalApp.service.WeatherService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +28,9 @@ public class UserController {
 
     @Autowired
     private UserRepo userRepo;
+
+    @Autowired
+    private WeatherService weatherService;
 
     @GetMapping("/all")
     public List<User> getAllUsers(){
@@ -66,6 +71,19 @@ public class UserController {
         String username = authentication.getName();
         userRepo.deleteByUserName(username);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+
+    @GetMapping("greeting")
+    public  ResponseEntity<?> greeting(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        WeatherResponse weatherResponse = weatherService.getWeather("Delhi");
+        String greeting = "";
+        if(weatherResponse!=null) {
+            greeting = ", Weather feels like " + weatherResponse.getCurrent().getFeelslike();
+        }
+
+        return new ResponseEntity<>("Hi "+authentication.getName()+greeting, HttpStatus.OK);
     }
 
 }

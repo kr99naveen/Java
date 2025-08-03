@@ -14,17 +14,19 @@ spring:
       password: Admin@123
 
 server:
-  port: 8081
+  port: 3002
   servlet:
     context-path: /journal
 
-logging:
-  level:
+weatherApiKey: 4867982c13ef2c83a6c9b0d26c3e343c
+
+#logging:
+#  level:
 #    com:
 #      naveen:
 #        journalApp: DEBUG
 #    root: ERROR   #only error and in root, so applied to whole project
-    root: OFF      #for offing the the logs, similarily for package and classes
+#    root: OFF      #for offing the the logs, similarily for package and classes
 
 # closing for a particular service class
 #logging:

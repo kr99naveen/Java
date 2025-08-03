@@ -1,0 +1,56 @@
+<!--configuration file to have our logs configuration. This will overwrite the-->
+<!--default configurations of logback provided by springboot-->
+
+<configuration>
+    <appender name="myConsoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+<!--                pattern in which logs will be printed in console-->
+                %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+<!--    normal file appender-->
+<!--    <appender name="myFileAppender" class="ch.qos.logback.core.FileAppender">-->
+<!--        <encoder>-->
+<!--            <pattern>-->
+<!--&lt;!&ndash;                pattern in which logs will be written&ndash;&gt;-->
+<!--                %d{yy-mm-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n-->
+<!--            </pattern>-->
+<!--        </encoder>-->
+
+<!--        <file>-->
+<!--            file name, for this file to be in particular path or folder, provide the path-->
+<!--            journalApp.log-->
+<!--        </file>-->
+<!--    </appender>-->
+
+<!--    rolling file appender-->
+<!--    it will roll and create new log file bsed on size and date-->
+    <appender name="myFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>
+            <!-- for this file to be in particular path or folder, provide the path in file tag-->
+            journalApp.log
+        </file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>journalApp-%d{yy-MM-dd_HH -mm}.%i.log</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>10</maxHistory>
+
+        </rollingPolicy>
+        <encoder>
+            <pattern>
+<!--                pattern in which logs will be written-->
+                %d{yy-mm-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+
+    <root level="INFO">
+        <appender-ref ref="myConsoleAppender"/>
+        <appender-ref ref="myFileAppender"/>
+    </root>
+
+</configuration>
