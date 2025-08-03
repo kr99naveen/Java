@@ -23,7 +23,6 @@ public class WeatherService {
     private String apiKey;
 
 //    private static final String weather_api ="https://api.weatherstack.com/current?access_key=API_KEY&query=CITY";
-
     //the rest template class in spring
     //using it that provide us to process http request
     //and bring response to us
