@@ -13,6 +13,21 @@ spring:
       name: naveen
       password: Admin@123
 
+#  configuration for mail sender, just like for mongotemplate, their beans
+#  are created by these configurations
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: leisurenaveen@gmail.com
+#    password from app created on gmail using this email account
+    password: rugq kkxh hntt sdch
+    properties:
+      mail:
+        smtp:
+          auth: true  #enabling authorization required
+          starttls:
+            enable: true  #data transfer between the server and email server is encrypted,  transport layer security
+
 server:
   port: 3002
   servlet:

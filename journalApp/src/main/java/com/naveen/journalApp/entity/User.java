@@ -22,7 +22,7 @@ import java.util.List;
 @Data  //Lombok data annotations, annotation that bundles several other Lombok annotations, including @Getter, @Setter, @ToString, @EqualsAndHashCode, and @RequiredArgsConstructor
 
 @Builder
-public class User {
+public class    User {
     //unique key in entries, not manadatory, if not provided, db will create it
     @Id
     private ObjectId id;
