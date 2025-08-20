@@ -12,6 +12,10 @@ spring:
     user:
       name: naveen
       password: Admin@123
+  redis:
+    host: localhost,
+    port: 6379 
+
 
 #  configuration for mail sender, just like for mongotemplate, their beans
 #  are created by these configurations

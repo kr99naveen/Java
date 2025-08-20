@@ -49,6 +49,8 @@ public class UserScheduler {
         }
     }
 
+
+//    Automating the clear app cache through cron
     @Scheduled(cron = "0 0/10 * ? * *")
     public  void  clearAppCache(){
         appCache.init();
