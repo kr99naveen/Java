@@ -32,14 +32,25 @@ public class WeatherService {
     @Autowired
     AppCache appCache;
 
+    @Autowired
+    private RedisService redisService;
+
 
     //GET api call from spring
     public WeatherResponse getWeather(String city){
-        String url = appCache.APP_CACHE.get(AppCache.keys.WEATHER_API.toString()).replace(Placeholders.CITY,city).replace(Placeholders.API_KEY,apiKey);
-        ResponseEntity<WeatherResponse> response = restTemplate.exchange(url, HttpMethod.GET,null, WeatherResponse.class);
-        log.info("Response fetched from weather stack ::::"+response);
-        WeatherResponse body = response.getBody();
-        return body;
+        WeatherResponse weatherResponse = redisService.get("weather_of_" + city, WeatherResponse.class);
+        if(weatherResponse != null){
+            return  weatherResponse;
+        }else{
+            String url = appCache.APP_CACHE.get(AppCache.keys.WEATHER_API.toString()).replace(Placeholders.CITY,city).replace(Placeholders.API_KEY,apiKey);
+            ResponseEntity<WeatherResponse> response = restTemplate.exchange(url, HttpMethod.GET,null, WeatherResponse.class);
+            log.info("Response fetched from weather stack ::::"+response);
+            WeatherResponse body = response.getBody();
+            if(body!=null){
+                redisService.set("weather_of_" + city, body, 300l);
+            }
+            return body;
+        }
     }
 
     //POST api call from spring

@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 //its telling spring that this related configurations stuff, look here as well for configurations things
+//as this file contains beans @Bean
 @Configuration
 //this tells spring to just don't apply the default configurations of spring security
 //use these connfigurations that i am providing
