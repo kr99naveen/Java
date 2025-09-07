@@ -14,8 +14,14 @@ public class PublicController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/create-user")
-    public void createUser(@RequestBody User user){
+    @PostMapping("/signup")
+    public void signup(@RequestBody User user){
+        System.out.println("creating user ::::: "+user);
+        userService.saveNewEntry(user);
+    }
+
+    @PostMapping("/login")
+    public void login(@RequestBody User user){
         System.out.println("creating user ::::: "+user);
         userService.saveNewEntry(user);
     }
