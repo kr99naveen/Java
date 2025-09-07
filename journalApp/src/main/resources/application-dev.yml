@@ -1,7 +1,9 @@
 spring:
   data:
     mongodb:
-      uri: mongodb+srv://naveen-spring-user-mongo:naveen-mongo%406530@java-springboot.gytwyb7.mongodb.net/?retryWrites=true&w=majority&appName=Java-Springboot
+#      uri: mongodb+srv://naveen-spring-user-mongo:naveen-mongo%406530@java-springboot.gytwyb7.mongodb.net/?retryWrites=true&w=majority&appName=Java-Springboot
+      host: localhost
+      port: 27017
       database: journaldb
       auto-index-creation: true
   main:

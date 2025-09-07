@@ -3,6 +3,7 @@ package com.naveen.journalApp.service;
 import com.naveen.journalApp.entity.JournalEntry;
 import com.naveen.journalApp.entity.User;
 import com.naveen.journalApp.repository.JournalEntryRepo;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-
+@Slf4j
 @Component
 public class JournalEntryService {
 
@@ -37,6 +38,7 @@ public class JournalEntryService {
     @Transactional
     public void saveEntry(JournalEntry journalEntry,  String userName){
         try {
+            System.out.println("creatitng journal entry::::");
             User user = userService.findByUserName(userName);
             JournalEntry saved = journalEntryRepo.save(journalEntry);
             ObjectId prevId = saved.getId();
@@ -47,7 +49,8 @@ public class JournalEntryService {
             user.getJournalEntries().add(saved);
             userService.saveUser(user);
         } catch (Exception e) {
-//            throw new RuntimeException("Exception while creating journal entry ::: ",e);
+            log.error("error while creating journal entry ::: ",e);
+            throw new RuntimeException("Exception while creating journal entry ::: ",e);
         }
     }
 
