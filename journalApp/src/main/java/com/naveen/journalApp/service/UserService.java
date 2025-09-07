@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -41,6 +42,9 @@ public class UserService {
         try{
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setRoles(Arrays.asList("USER"));
+            if(user.getJournalEntries() == null){
+                user.setJournalEntries(new ArrayList<>());
+            }
             userRepo.save(user);
         } catch (Exception e) {
 //            logger.error("Error occured for {}:::: ",user.getUserName(),e);

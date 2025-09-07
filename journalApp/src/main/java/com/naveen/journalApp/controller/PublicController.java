@@ -49,7 +49,7 @@ public class PublicController {
             return new ResponseEntity<>(jwt,HttpStatus.OK);
         }
         catch (Exception e){
-            log.error("exception while loggin in :: ",e);
+            log.error("exception while loggin in :: ",e.getMessage());
             return new ResponseEntity<>("Incorrect username or password", HttpStatus.BAD_REQUEST);
         }
     }
