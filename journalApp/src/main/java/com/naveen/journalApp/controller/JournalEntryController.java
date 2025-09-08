@@ -1,5 +1,6 @@
 package com.naveen.journalApp.controller;
 
+import com.naveen.journalApp.common.response.ApiResponse;
 import com.naveen.journalApp.entity.JournalEntry;
 import com.naveen.journalApp.entity.User;
 import com.naveen.journalApp.service.JournalEntryService;
@@ -13,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,16 +35,21 @@ public class JournalEntryController {
     @GetMapping
     public ResponseEntity<?> getAllJournalEntriesOfUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        Object authToken = authentication.getCredentials();
+//        System.out.println("values :::: "+ (authToken));
         String userName = authentication.getName();
         User user = userService.findByUserName(userName);
 //        List<JournalEntry> all = journalEntryService.getAll();
         List<JournalEntry> all = user.getJournalEntries();
         if(all!=null && !all.isEmpty()){
-            return new ResponseEntity<>(all,HttpStatus.OK);
+//            return new ResponseEntity<>(all,HttpStatus.OK);
+            return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(true, "All journals fetched",all));
         }
 
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>(true, "No Journals found"));
     }
+
 
     @PostMapping
     public ResponseEntity<JournalEntry> createEntry(@RequestBody JournalEntry myEntry){

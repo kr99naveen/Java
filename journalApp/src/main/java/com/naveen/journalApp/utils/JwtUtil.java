@@ -1,5 +1,7 @@
 package com.naveen.journalApp.utils;
 
+import com.naveen.journalApp.service.RedisService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -11,6 +13,9 @@ import java.util.Map;
 
 @Component
 public class JwtUtil {
+
+    @Autowired
+    private RedisService redisService;
 
     private String SECRET_KEY = "TaK+HaV^uvCHEFsEVfypW#7g9^k*Z8$V";
 
@@ -28,11 +33,14 @@ public class JwtUtil {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser()
+        Claims data = Jwts.parser()
                 .verifyWith(getSigningKey())
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
+
+        System.out.println("claim data received :::; "+data);
+        return data;
     }
 
     private Boolean isTokenExpired(String token) {
@@ -57,6 +65,8 @@ public class JwtUtil {
     }
 
     public Boolean validateToken(String token) {
-        return !isTokenExpired(token);
+        String username = extractUsername(token);
+        String tokenFromRedis = redisService.get(username+"_token",String.class);
+        return tokenFromRedis.equals(token) && !isTokenExpired(token);
     }
 }

@@ -1,6 +1,8 @@
 package com.naveen.journalApp.controller;
 
+import com.naveen.journalApp.common.response.ApiResponse;
 import com.naveen.journalApp.entity.User;
+import com.naveen.journalApp.service.RedisService;
 import com.naveen.journalApp.service.UserDetailsServiceImpl;
 import com.naveen.journalApp.service.UserService;
 import com.naveen.journalApp.utils.JwtUtil;
@@ -14,6 +16,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -32,6 +36,9 @@ public class PublicController {
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Autowired
+    private RedisService redisService;
+
     @PostMapping("/signup")
     public void signup(@RequestBody User user){
         System.out.println("creating user ::::: "+user);
@@ -39,24 +46,29 @@ public class PublicController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody User user){
+    public ResponseEntity<ApiResponse> login(@RequestBody User user){
         try{
             System.out.println("loggin in user :::: ");
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(user.getUserName(), user.getPassword()));
             UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUserName());
             String jwt = jwtUtil.generateToken(userDetails.getUsername());
-            return new ResponseEntity<>(jwt,HttpStatus.OK);
+            redisService.set(userDetails.getUsername()+"_token",jwt,(long)60*10);
+            Map<String, String> token = Map.of("token", jwt);
+            return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(true,"Login Successfull", token));
         }
         catch (Exception e){
             log.error("exception while loggin in :: ",e.getMessage());
-            return new ResponseEntity<>("Incorrect username or password", HttpStatus.BAD_REQUEST);
+//            return new ResponseEntity<>("Incorrect username or password", HttpStatus.BAD_REQUEST);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse<>(false, "Incorrect username or password"));
+
         }
     }
 
     @GetMapping("health")
-    public String healthCheck(){
-        return "OK";
+    public ResponseEntity<?> healthCheck(){
+        return ResponseEntity.ok(new ApiResponse<>(true,"OK"));
     }
 
 
