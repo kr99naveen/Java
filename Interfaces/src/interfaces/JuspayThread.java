@@ -14,13 +14,13 @@ public class JuspayThread extends Thread{
             int count=0;
             while(count<3)
             {
-                Thread.sleep(2000);
+//                Thread.sleep(2000);
                 try{
                     count++;
                     payObj.makePayment();
                     return;
-                } catch (Exception e){
-                    System.out.println("Exception during payment :::: "+e.getMessage());
+                    } catch (Exception e){
+                    System.out.println("Exception during payment :::: "+ e+" "+Thread.currentThread().getName()+" "+e.getMessage());
                 }
 
             }

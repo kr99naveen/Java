@@ -1,5 +1,6 @@
 package interfaces;
 
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class JusPay extends ReentrantLock implements PaymentProcessor{
@@ -12,16 +13,23 @@ public class JusPay extends ReentrantLock implements PaymentProcessor{
     @Override
     public void makePayment() throws  InterruptedException{
         try{
-            if(tryLock()) {
+            if(tryLock(3000, TimeUnit.MILLISECONDS )) {
                 this.checkPayment();
                 this.amount -= 50;
                 System.out.println("Payment processed By ::: " + Thread.currentThread().getName());
                 this.checkPayment();
                 Thread.sleep(3000);
-            } else throw new InterruptedException("Method locked.");
-        }catch (Exception e){
-            throw new InterruptedException("method is locked, please wait for some time.");
+            } else {
+//                Thread.currentThread().interrupt();
+                //interrupt is used when we want to say this thread stop whatever you are doing, i.e interrupt it
+                throw new InterruptedException("Method locked, please try later");
+            }
+        }catch ( Exception e){
+//            Thread.currentThread().interrupt();
+            //interrupt is used when we want to say this thread stop whatever you are doing, i.e interrupt it
+            throw new InterruptedException(e.getMessage());
         }
+
         finally {
             unlock();
         }
