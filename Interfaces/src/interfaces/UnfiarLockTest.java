@@ -4,6 +4,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class UnfiarLockTest {
 
+    //its general instance of reentrant lock, randomly handle threads
     private final ReentrantLock unfairLock = new ReentrantLock();
 
     public void accessResource(){

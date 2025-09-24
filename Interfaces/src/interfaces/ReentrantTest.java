@@ -35,3 +35,11 @@ public class ReentrantTest {
         obj.outerMethod();
     }
 }
+
+//here same instance of lock used two times, and it can be used, both are used kindoff separately
+//because its an reentrant lock, i.e that can be re-enter
+//a count is maintained for all
+// first lock - count 1
+//second lock - count 2
+//first unlock - count 1
+//first unlock - count 0

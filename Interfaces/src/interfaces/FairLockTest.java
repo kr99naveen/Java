@@ -4,7 +4,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class FairLockTest {
 
-    //passing true in constructor makes the lock, fair i.e first come first serve
+    //passing true in constructor makes the lock fair i.e first come first serve
     //eg if thread 1 started before 2, then thread 1 will get the access first
     //while if not passed as true, it can unfair
     private final ReentrantLock fairLock = new ReentrantLock(true );
