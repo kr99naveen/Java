@@ -2,7 +2,7 @@ package interfaces;
 
 import java.util.concurrent.locks.ReentrantLock;
 
-public class UnfiarLockTest {
+public class UnfairLockTest {
 
     private final ReentrantLock unfairLock = new ReentrantLock();
 
@@ -21,7 +21,7 @@ public class UnfiarLockTest {
 
     public static void main(String[] args) {
 
-        UnfiarLockTest obj = new UnfiarLockTest();
+        UnfairLockTest obj = new UnfairLockTest();
         Runnable task = new Runnable() {
             @Override
             public void run() {
