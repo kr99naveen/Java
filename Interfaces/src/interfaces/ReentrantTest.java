@@ -6,21 +6,27 @@ public class ReentrantTest {
 
     private final ReentrantLock lock = new ReentrantLock();
 
-    public void outerMethod(){
+    public void outerMethod(int caller){
         lock.lock();
         try{
-            System.out.println("Outer Method called");
-            innerMethod();
-        }finally {
+            System.out.println("Outer Method called by : "+caller);
+            Thread.sleep(1000);
+            innerMethod(caller);
+            System.out.println("Locked count that need to be unlocked :: "+lock.getHoldCount());
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } finally {
             lock.unlock();
         }
     }
 
-    public void innerMethod(){
+    public void innerMethod(int caller){
         try{
             lock.lock();
+//            lock.lock();
+//            lock.lock();
             try{
-                System.out.println("Inner Method called ");
+                System.out.println("Inner Method called by : "+caller);
             }finally {
                 lock.unlock();
             }
@@ -32,7 +38,16 @@ public class ReentrantTest {
 
     public static void main(String[] args) {
         ReentrantTest obj = new ReentrantTest();
-        obj.outerMethod();
+
+        Thread t1 = new Thread(()->{
+            obj.outerMethod(1);
+        });
+        Thread t2 = new Thread(()->{
+            obj.outerMethod(2);
+        });
+
+        t1.start();
+        t2.start();
     }
 }
 

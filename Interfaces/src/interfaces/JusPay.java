@@ -11,7 +11,7 @@ public class JusPay extends ReentrantLock implements PaymentProcessor{
     }
 
     @Override
-    public void makePayment() throws  InterruptedException{
+    public synchronized void makePayment() throws  InterruptedException{
         try{
             if(tryLock(3000, TimeUnit.MILLISECONDS )) {
                 this.checkPayment();

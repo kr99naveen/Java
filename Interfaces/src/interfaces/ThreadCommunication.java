@@ -14,7 +14,7 @@ class SharedResource{
         System.out.println("produced : "+value);
         data = value;
         hasData=true;
-        Thread.sleep(1000);
+        Thread.sleep(500);
         notify();
     }
 

@@ -5,6 +5,15 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+
+//It allows:
+//
+//Multiple readers to access the resource simultaneously (as long as no writer holds the lock)
+//
+//Only one writer at a time (and when writing, no readers are allowed)
+//
+//This improves performance in scenarios where reads are much more frequent than writes.
+
 public class ReadWriteLockTest {
 
     private int count = 0;
@@ -20,7 +29,7 @@ public class ReadWriteLockTest {
         try{
             System.out.println("Performing write ops :: "+Thread.currentThread().getName());
             count++;
-            Thread.sleep(50);
+            Thread.sleep(2000);
             System.out.println("Write performed");
         }catch (Exception e){
             System.out.println("exception occurred while write op :: "+e);
@@ -31,11 +40,19 @@ public class ReadWriteLockTest {
     }
 
     public void getCount(){
-        readLock.lock();;
-//        normalLock.lock();
+//        readLock.lock();;
+        normalLock.lock();
         try{
             System.out.println("reading ops : "+Thread.currentThread().getName()+" value -> "+count);
-        }finally {
+            //this sleep will give no effect as multiple reads are allowed given
+            //that no writing is perormed, so both read threads will run simultnaeously
+            //with no gap of this time
+            //BUT if you use normal lock, it gonna give a of this time in read threads
+            //:)
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } finally {
             readLock.unlock();
 //            normalLock.unlock();
         }
@@ -48,20 +65,20 @@ public class ReadWriteLockTest {
         Runnable readTask = new Runnable() {
             @Override
             public void run() {
-                for(int i=0;i<10;i++){
+//                for(int i=0;i<10;i++){
                     System.out.println("read ops initiated");
                     rwObj.getCount();
-                }
+//                }
             }
         };
 
         Runnable writeTask = new Runnable() {
             @Override
             public void run() {
-                for(int i=0;i<10;i++){
+//                for(int i=0;i<10;i++){
                     System.out.println("write ops initiated");
                     rwObj.increment();
-                }
+//                }
             }
         };
 
