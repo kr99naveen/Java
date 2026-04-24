@@ -1,11 +1,25 @@
 spring:
   data:
     mongodb:
-#      uri: mongodb+srv://naveen-spring-user-mongo:naveen-mongo%406530@java-springboot.gytwyb7.mongodb.net/?retryWrites=true&w=majority&appName=Java-Springboot
-      host: localhost
-      port: 27017
-      database: journaldb
-      auto-index-creation: true
+#       uri: mongodb+srv://naveen-spring-user-mongo:naveen-mongo%406530@java-springboot.gytwyb7.mongodb.net/?retryWrites=true&w=majority&appName=Java-Springboot
+        uri: mongodb://localhost:27017/
+#      host: localhost
+#      port: 27017
+#      database: journaldb
+#      auto-index-creation: true
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/journals
+    username: root
+    password: admin123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update   # or validate / create
+    show-sql: true
+    open-in-view: false
+#    database-platform: org.hibernate.dialect.MySQLDialect
   main:
     allow-circular-references: true
   application:
@@ -16,8 +30,7 @@ spring:
       password: Admin@123
   redis:
     host: localhost,
-    port: 6379 
-
+    port: 6379
 
 #  configuration for mail sender, just like for mongotemplate, their beans
 #  are created by these configurations
@@ -40,6 +53,16 @@ server:
     context-path: /journal
 
 weatherApiKey: 4867982c13ef2c83a6c9b0d26c3e343c
+
+profile_key : "naveen-dev"
+
+#  properties for setting up actuator (used for monitoring and health checks
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,metrics,info"
+      base-path: /server
 
 #logging:
 #  level:

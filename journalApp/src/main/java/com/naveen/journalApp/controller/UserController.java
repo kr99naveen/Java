@@ -1,7 +1,9 @@
 package com.naveen.journalApp.controller;
 
 import com.naveen.journalApp.api.response.WeatherResponse;
+import com.naveen.journalApp.common.response.ApiResponse;
 import com.naveen.journalApp.entity.JournalEntry;
+import com.naveen.journalApp.entity.TestUser;
 import com.naveen.journalApp.entity.User;
 import com.naveen.journalApp.repository.UserRepo;
 import com.naveen.journalApp.service.JournalEntryService;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -77,13 +80,16 @@ public class UserController {
     @GetMapping("greeting")
     public  ResponseEntity<?> greeting(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
         WeatherResponse weatherResponse = weatherService.getWeather("Delhi");
+        System.out.println("response of weather api :::: "+weatherResponse);
         String greeting = "";
         if(weatherResponse!=null) {
             greeting = ", Weather feels like " + weatherResponse.getCurrent().getFeelslike();
         }
 
-        return new ResponseEntity<>("Hi "+authentication.getName()+greeting, HttpStatus.OK);
+        Map userData = userService.getTestUser(username);
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(true, "Hi "+authentication.getName()+greeting, userData));
     }
 
 }

@@ -42,7 +42,11 @@ public class WeatherService {
         if(weatherResponse != null){
             return  weatherResponse;
         }else{
-            String url = appCache.APP_CACHE.get(AppCache.keys.WEATHER_API.toString()).replace(Placeholders.CITY,city).replace(Placeholders.API_KEY,apiKey);
+//            String url = appCache.APP_CACHE.get(AppCache.keys.WEATHER_API.toString()).replace(Placeholders.CITY,city).replace(Placeholders.API_KEY,apiKey);
+            String url = "http://api.weatherstack.com/current?access_key=apiKey&query=queryParam"
+                    .replace("apiKey",apiKey)
+                            .replace("queryParam","Mohali");
+            System.out.println("url made ::: "+url);
             ResponseEntity<WeatherResponse> response = restTemplate.exchange(url, HttpMethod.GET,null, WeatherResponse.class);
             log.info("Response fetched from weather stack ::::"+response);
             WeatherResponse body = response.getBody();

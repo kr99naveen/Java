@@ -67,6 +67,7 @@ public class JwtUtil {
     public Boolean validateToken(String token) {
         String username = extractUsername(token);
         String tokenFromRedis = redisService.get(username+"_token",String.class);
+        if(tokenFromRedis==null) return false;
         return tokenFromRedis.equals(token) && !isTokenExpired(token);
     }
 }

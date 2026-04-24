@@ -34,6 +34,7 @@ public class SpringSecurityProd {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         return http.authorizeHttpRequests(request -> request
+                        .requestMatchers("/public/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(Customizer.withDefaults())

@@ -45,7 +45,7 @@ public class SpringSecurity {
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().permitAll())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .formLogin(Customizer.withDefaults())
+//                .formLogin(Customizer.withDefaults())
 //                .httpBasic(Customizer.withDefaults()) //this is for http baisc auth
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class) //for jwt auth

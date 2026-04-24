@@ -9,6 +9,7 @@ import com.naveen.journalApp.utils.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -39,6 +40,9 @@ public class PublicController {
     @Autowired
     private RedisService redisService;
 
+    @Value("${profile_key}")
+    private String profileKey;
+
     @PostMapping("/signup")
     public void signup(@RequestBody User user){
         System.out.println("creating user ::::: "+user);
@@ -68,6 +72,7 @@ public class PublicController {
 
     @GetMapping("health")
     public ResponseEntity<?> healthCheck(){
+        System.out.println("value of key :::: "+profileKey);
         return ResponseEntity.ok(new ApiResponse<>(true,"OK"));
     }
 
